@@ -7,6 +7,7 @@ import java.util.List;
 @Service
 public interface StudentService {
     public void createStudent(String name);
+    public void updateStudent(Integer id, String newName);
     public StudentResponseDTO getStudentById(Integer id);
-    public List<StudentResponseDTO> getAllStudent();
+    public List<StudentResponseDTO> getAllStudent(int size,int pageNum);
 }

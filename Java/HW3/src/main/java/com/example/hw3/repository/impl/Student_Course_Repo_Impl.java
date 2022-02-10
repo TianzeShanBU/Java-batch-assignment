@@ -24,15 +24,15 @@ public class Student_Course_Repo_Impl implements Student_Course_Repository {
     @Override
     public void register(Integer s_id, Integer c_id) {
         Query query = em.createQuery("SELECT a from Student a where a.id = " + s_id);
-        Student s = (Student) query.getSingleResult();
-        if(s==null){
+        if(query.getResultList().isEmpty()){
             throw new StudentNotFoundException("STUDENT_NOT_FOUND");
         }
+        Student s = (Student) query.getSingleResult();
         Query q = em.createQuery("SELECT a from Course a where a.id = " + c_id);
-        Course c = (Course) q.getSingleResult();
-        if(c==null){
+        if(q.getResultList().isEmpty()){
             throw new CourseNotFoundException("COURSE_NOT_FOUND");
         }
+        Course c = (Course) q.getSingleResult();
         Student_Course sc = new Student_Course();
         sc.setCourse(c);
         sc.setStu(s);
@@ -42,6 +42,9 @@ public class Student_Course_Repo_Impl implements Student_Course_Repository {
     @Override
     public List<Student_Course> getAllStudent_Course() {
         Query query = em.createQuery("SELECT a from Student_Course a");
+        if(query.getResultList().isEmpty()){
+            throw new RuntimeException("STUDENT_COURSE_TABLE_IS_EMPTY");
+        }
         return query.getResultList();
     }
 }

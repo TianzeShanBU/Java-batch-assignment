@@ -25,21 +25,37 @@ public class StudentRepositoryImpl implements StudentRepository {
         em.persist(s);
     }
 
+    @Transactional
+    @Override
+    public void updateStudent(Integer id, String newName) {
+        Student s=null;
+        try{
+            s = findStudentById(id);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        if(s==null){
+            s=new Student();
+        }
+        s.setName(newName);
+        em.persist(s);
+    }
+
     @Override
     public Student findStudentById(Integer id) {
         Query query = em.createQuery("SELECT a from Student a where a.id = " + id);
-        Student s = (Student) query.getSingleResult();
-        if(s==null){
+        if(query.getResultList().isEmpty()){
             throw new StudentNotFoundException("STUDENT_NOT_FOUND");
         }
+        Student s = (Student) query.getSingleResult();
         return s;
     }
 
     @Override
-    public List<Student> findAllStudents() {
-        Query query = em.createQuery("SELECT a from Student a");
+    public List<Student> findAllStudents(int size, int pageNum) {
+        Query query = em.createQuery("SELECT a from Student a").setMaxResults(size).setFirstResult(size*(pageNum-1));
         List<Student> ls = query.getResultList();
-        if(ls==null){
+        if(ls.isEmpty()){
             throw new StudentNotFoundException("LIST_OF_STUDENT_NOT_FOUND");
         }
         return ls;

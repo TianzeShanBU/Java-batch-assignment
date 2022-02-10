@@ -32,20 +32,20 @@ public class CourseRepositoryImpl implements CourseRepository {
     @Override
     public Course findCourseById(Integer id) {
         Query query = em.createQuery("SELECT a from Course a where a.id = " + id);
-        Course c = (Course)query.getSingleResult();
-        if(c==null){
+        if(query.getResultList().isEmpty()){
             throw new CourseNotFoundException("COURSE_NOT_FOUND");
         }
+        Course c = (Course)query.getSingleResult();
         return c;
     }
 
     @Override
     public List<Course> findAllCourses() {
         Query query = em.createQuery("SELECT a from Course a");
-        List<Course> lc = query.getResultList();
-        if(lc==null){
+        if(query.getResultList().isEmpty()){
             throw new CourseNotFoundException("LIST_OF_COURSE_NOT_FOUND");
         }
+        List<Course> lc = query.getResultList();
         return lc;
     }
 }

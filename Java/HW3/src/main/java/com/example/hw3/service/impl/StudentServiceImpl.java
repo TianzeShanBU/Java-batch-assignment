@@ -25,13 +25,18 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public void updateStudent(Integer id, String newName) {
+        sr.updateStudent(id,newName);
+    }
+
+    @Override
     public StudentResponseDTO getStudentById(Integer id) {
         return new StudentResponseDTO(sr.findStudentById(id).getName());
     }
 
     @Override
-    public List<StudentResponseDTO> getAllStudent() {
-        return sr.findAllStudents().stream().map(s->new StudentResponseDTO(s.getName())).collect(Collectors.toList());
+    public List<StudentResponseDTO> getAllStudent(int size, int pageNum) {
+        return sr.findAllStudents(size,pageNum).stream().map(s->new StudentResponseDTO(s.getName())).collect(Collectors.toList());
     }
 
 }

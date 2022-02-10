@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface StudentRepository {
     void createStudent(String name);
+    void updateStudent(Integer id, String newName);
     Student findStudentById(Integer id);
-    List<Student> findAllStudents();
+    List<Student> findAllStudents(int size,int pageNum);
 
 }

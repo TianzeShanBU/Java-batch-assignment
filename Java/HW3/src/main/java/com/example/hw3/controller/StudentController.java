@@ -32,13 +32,19 @@ public class StudentController {
 
 
     @GetMapping("/student")
-    public ResponseEntity<List<StudentResponseDTO>> getAllStudents() throws StudentNotFoundException {
-        return new ResponseEntity<>(ss.getAllStudent(), HttpStatus.OK);
+    public ResponseEntity<List<StudentResponseDTO>> getAllStudents(@RequestParam(required = false,defaultValue = "10") int size,
+                                                                   @RequestParam(required = false,defaultValue = "1") int pageNum) throws StudentNotFoundException {
+        return new ResponseEntity<>(ss.getAllStudent(size,pageNum), HttpStatus.OK);
     }
 
     @GetMapping("/student/{id}")
     public ResponseEntity<StudentResponseDTO> getAllStudentById(@PathVariable Integer id) throws StudentNotFoundException{
         return new ResponseEntity<>(ss.getStudentById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("student/{id}")
+    public void updateStudent(@PathVariable Integer id, @RequestBody String str){
+        ss.updateStudent(id,str);
     }
 
     @ExceptionHandler(Exception.class)
